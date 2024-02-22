@@ -62,7 +62,7 @@ public class OCIUploadService {
         List<ClickConversion> conversions = afConversionRecordList.stream()
                 .map(record ->
                         this.buildConversion(mccID, conversionId,
-                                record.getGCLID(), record.getWBRAID(), record.getConversionDateTime(), record.getValue(), record.getCurrencyCode())
+                                record.getGCLID(), record.getWBRAID(), record.getConversionDateTime(), null, record.getCurrencyCode())
                 ).collect(Collectors.toList());
         Lists.partition(conversions, 50).forEach(partitionedConvs -> this.uploadConversions(mccID, partitionedConvs));
     }

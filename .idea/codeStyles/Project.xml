@@ -1,0 +1,20 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <ScalaCodeStyleSettings>
+      <option name="MULTILINE_STRING_CLOSING_QUOTES_ON_NEW_LINE" value="true" />
+    </ScalaCodeStyleSettings>
+    <SqlCodeStyleSettings version="6">
+      <option name="KEYWORD_CASE" value="2" />
+      <option name="IDENTIFIER_CASE" value="1" />
+      <option name="QUERY_EL_COMMA" value="1" />
+      <option name="SUBQUERY_OPENING" value="3" />
+      <option name="SUBQUERY_CONTENT" value="4" />
+      <option name="SUBQUERY_CLOSING" value="3" />
+      <option name="INSERT_COLLAPSE_MULTI_ROW_VALUES" value="true" />
+      <option name="WITH_ALIGN_AS" value="true" />
+      <option name="SELECT_NEW_LINE_AFTER_ALL_DISTINCT" value="true" />
+      <option name="FROM_ALIGN_JOIN_TABLES" value="true" />
+      <option name="FROM_ALIGN_ALIASES" value="true" />
+    </SqlCodeStyleSettings>
+  </code_scheme>
+</component>

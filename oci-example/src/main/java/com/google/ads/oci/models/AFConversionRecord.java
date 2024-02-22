@@ -23,10 +23,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class AFConversionRecord extends ConversionRecord{
-    private static final DateTimeFormatter AF_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/M/d H:m");
+    private static final DateTimeFormatter AF_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter OCI_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss+00:00");
     private AFConversionRecord(String gclid, String gbraid, String wbraid, Double value, String currencyCode, String conversionDateTime) {
         super(gclid, gbraid, wbraid, value, currencyCode, conversionDateTime);
@@ -39,8 +41,19 @@ public class AFConversionRecord extends ConversionRecord{
 
     public static Optional<AFConversionRecord> of(CSVRecord csvRecord) {
         String convertedDateTime = LocalDateTime.parse(csvRecord.get("Event Time"), AF_DATE_TIME_FORMATTER).format(OCI_DATE_TIME_FORMATTER);
-        String gclid = csvRecord.get("Sub Param 1");
-        String wbraid = csvRecord.get("Sub Param 3");
+        String oreiginalUrl = csvRecord.get("Original URL");
+        Pattern pattern = Pattern.compile("(?:^|&)af_sub1=([^&]*)|(?:^|&)af_sub3=([^&]*)");
+        Matcher matcher = pattern.matcher(oreiginalUrl);
+        String gclid = new String();
+        String wbraid = new String();
+        while (matcher.find()) {
+            if (matcher.group(1) != null) {
+                gclid = matcher.group(1);
+            }
+            if (matcher.group(2) != null) {
+                wbraid = matcher.group(2);
+            }
+        }
         String valueStr = csvRecord.get("Event Value");
         String currencyCode = csvRecord.get("Event Revenue Currency");
 
@@ -48,6 +61,7 @@ public class AFConversionRecord extends ConversionRecord{
             System.out.println("Both gclid and wbraid are empty, csv record: " + csvRecord);
             return Optional.empty();
         }
+
 
         return Objects.equals(csvRecord.get("Event Name"), "install")? Optional.of(
                 new AFConversionRecord(
